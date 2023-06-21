@@ -2,7 +2,7 @@
 
 set -e
 
-NUM_OF_REP=3
+NUM_OF_REP=10
 FROM=10
 TO=100
 STEP_SIZE=10

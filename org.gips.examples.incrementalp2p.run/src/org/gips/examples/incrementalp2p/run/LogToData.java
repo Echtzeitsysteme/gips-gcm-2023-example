@@ -46,6 +46,7 @@ public class LogToData {
 
 		// Propagate data to sub lists
 		for (final String l : dataLines) {
+//			System.out.println(l);
 			final String clients = l.substring(0, l.indexOf(";"));
 			if (!data.containsKey(Integer.valueOf(clients))) {
 				data.put(Integer.valueOf(clients), new LinkedList<DataRecord>());
