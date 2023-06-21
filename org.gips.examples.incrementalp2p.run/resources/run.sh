@@ -24,6 +24,11 @@ function gips_setup {
 
     rsync -a ./org ../org.gips.examples.incrementalp2p.repository/src-gen/
     rsync -a ./org ../org.gips.examples.incrementalp2p.gips.incrementaldistribution/src-gen/
+
+    # ws-related gips-model file
+    mkdir -p /home/mkratz/git/gips-gcm-2023-example/org.gips.examples.incrementalp2p.gips.incrementaldistribution/src-gen/org/gips/examples/incrementalp2p/gips/incrementaldistribution/api/gips/
+    cp org/gips/examples/incrementalp2p/gips/incrementaldistribution/api/gips/gips-model.xmi /home/mkratz/git/gips-gcm-2023-example/org.gips.examples.incrementalp2p.gips.incrementaldistribution/src-gen/org/gips/examples/incrementalp2p/gips/incrementaldistribution/api/gips/
+
     rm -r ./org
 }
 
@@ -38,6 +43,7 @@ function clean {
     rm -r ../org.gips.examples.incrementalp2p.repository
     rm -r ../org.gips.examples.incrementalp2p.gips.incrementaldistribution
     rm -r ./src-sim
+    rm -r /home/mkratz/git/gips-gcm-2023-example/org.gips.examples.incrementalp2p.gips.incrementaldistribution/src-gen/org/gips/examples/incrementalp2p/gips/incrementaldistribution/api/gips/
 }
 
 # Config

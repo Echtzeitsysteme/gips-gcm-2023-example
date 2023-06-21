@@ -8,7 +8,8 @@ TO=100
 STEP_SIZE=10
 
 for (( i=$FROM; i<=$TO; i+=$STEP_SIZE )); do
-    for j in {1..$NUM_OF_REP}; do
+    for (( rep=1; rep<=$NUM_OF_REP; rep+=1 )); do
+        echo "=> Starting repetition $rep with $i clients."
         ./run.sh $i
     done
 done
