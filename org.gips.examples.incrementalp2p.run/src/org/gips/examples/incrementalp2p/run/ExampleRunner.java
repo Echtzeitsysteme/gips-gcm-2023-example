@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
+import org.gips.examples.incrementalp2p.common.TimeAggregator;
 import org.gips.examples.incrementalp2p.common.models.WaitingClient;
 import org.gips.examples.incrementalp2p.distribution.contracts.ConnectionLog;
 import org.gips.examples.incrementalp2p.distribution.contracts.IncrementalNodeDistributionEngine;
@@ -46,8 +47,8 @@ public class ExampleRunner {
 		incrementalNodeDistribution(clients);
 		removeRelayClientAndRedistribute();
 		incrementalNodeDistributionForAdditionalClients(additionalClients);
-		visualizer.createGraph(RelativeFolder, NodeName);
-		openHtmlFileInBrowser();
+//		visualizer.createGraph(RelativeFolder, NodeName);
+//		openHtmlFileInBrowser();
 	}
 
 	private void incrementalNodeDistribution(final List<WaitingClient> clients) {
@@ -73,9 +74,12 @@ public class ExampleRunner {
 
 	private void incrementalNodeDistributionForAdditionalClients(final List<WaitingClient> clients) {
 		connectionLog.clear();
-		
+
 		nodeDistributionEngine.distributeNodes(clients).save(RelativeFolder,
 				"IncrementalNodeDistribution_AdditionalClients");
+
+		System.err.println("Total GT time: " + TimeAggregator.getGtTime());
+		System.err.println("Total ILP time: " + TimeAggregator.getIlpTime());
 
 		// For UI: Save Nodes & Edges for second update
 		var clientIds = clients.stream().map(x -> x.id()).collect(Collectors.toList());
@@ -108,5 +112,5 @@ public class ExampleRunner {
 	private VisualizationConnection toVisualisationConnection(ConnectionModel x) {
 		return new VisualizationConnection(x.server(), x.client(), (int) x.bandwidth());
 	}
-	
+
 }

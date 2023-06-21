@@ -24,7 +24,7 @@ config {
 	timeLimit := true [value := 120.0];
 	randomSeed := true [value := 0];
 	presolve := true;
-	debugOutput := true;
+	debugOutput := false;
 }
 
 mapping currentLectureStudioConnections with findCurrentLectureStudioConnection;
