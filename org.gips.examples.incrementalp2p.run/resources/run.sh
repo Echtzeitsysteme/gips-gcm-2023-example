@@ -37,6 +37,7 @@ function clean {
     rm -r ./bin
     rm -r ../org.gips.examples.incrementalp2p.repository
     rm -r ../org.gips.examples.incrementalp2p.gips.incrementaldistribution
+    rm -r ./src-sim
 }
 
 # Config
