@@ -1,15 +1,12 @@
 Manifest-Version: 1.0
-Automatic-Module-Name: org.gips.examples.incrementalp2p.gips.increment
- aldistribution
+Automatic-Module-Name: org.gips.examples.incrementalp2p.gips.incrementaldistribution
 Bundle-ManifestVersion: 2
-Bundle-Name: org.gips.examples.incrementalp2p.gips.incrementaldistribu
- tion
+Bundle-Name: org.gips.examples.incrementalp2p.gips.incrementaldistribution
 Bundle-Vendor: My Company
 Bundle-Version: 1.0.0.qualifier
-Bundle-SymbolicName: org.gips.examples.incrementalp2p.gips.incremental
- distribution; singleton:=true
+Bundle-SymbolicName: org.gips.examples.incrementalp2p.gips.incrementaldistribution; singleton:=true
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-16
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.emoflon.ibex.common,
  org.emoflon.ibex.gt,
  org.emoflon.gips.core,
