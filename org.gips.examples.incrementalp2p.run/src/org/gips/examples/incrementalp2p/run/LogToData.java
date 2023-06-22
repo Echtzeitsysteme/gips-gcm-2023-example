@@ -60,16 +60,17 @@ public class LogToData {
 			final int clients = drs.get(0).clients();
 			double gtSum = 0;
 			double ilpSum = 0;
-			double miscSum = 0;
+			double totalSum = 0;
 			for (final DataRecord r : drs) {
 				gtSum += r.gt;
 				ilpSum += r.ilp;
-				miscSum += r.misc;
+				totalSum += r.misc;
 			}
 
 			double meanGt = gtSum / drs.size();
 			double meanIlp = ilpSum / drs.size();
-			double meanMisc = miscSum / drs.size();
+			double meanMisc = (totalSum - gtSum - ilpSum) / drs.size();
+//			double meanMisc = totalSum / drs.size();
 
 			means.add(new DataRecord(clients, meanGt, meanIlp, meanMisc));
 		}
