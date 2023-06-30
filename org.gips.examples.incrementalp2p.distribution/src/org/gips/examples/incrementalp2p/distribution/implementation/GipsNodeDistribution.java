@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 import org.apache.log4j.Logger;
 import org.emoflon.gips.core.gt.GTMapper;
 import org.gips.examples.incrementalp2p.common.Guard;
+import org.gips.examples.incrementalp2p.common.TimeAggregator;
 import org.gips.examples.incrementalp2p.distribution.contracts.ConnectionLog;
 import org.gips.examples.incrementalp2p.distribution.contracts.NodeDistributionEngine;
 import org.gips.examples.incrementalp2p.distribution.implementation.strategy.SquareRootIncrementStrategy;
@@ -34,11 +35,21 @@ public class GipsNodeDistribution implements NodeDistributionEngine {
 
 	@Override
 	public NodeDistributionEngine distributeNodes() {
-		api.buildILPProblem(true);
+		TimeAggregator.gtTick();
+		api.update();
+		TimeAggregator.gtTock();
+		
+		api.buildILPProblem(false);
+
+		TimeAggregator.ilpTick();
 		api.solveILPProblem();
+		TimeAggregator.ilpTock();
 
 		relevantMappings().forEach(x -> x.applyNonZeroMappings(false));
+		
+		TimeAggregator.gtTick();
 		api.update();
+		TimeAggregator.gtTock();
 		return this;
 	}
 

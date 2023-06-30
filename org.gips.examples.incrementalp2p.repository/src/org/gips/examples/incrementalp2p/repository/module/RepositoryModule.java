@@ -2,6 +2,7 @@ package org.gips.examples.incrementalp2p.repository.module;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.gips.examples.incrementalp2p.common.TimeAggregator;
 import org.gips.examples.incrementalp2p.repository.api.RepositoryAPI;
 import org.gips.examples.incrementalp2p.repository.api.RepositoryHiPEApp;
 import org.gips.examples.incrementalp2p.repository.contracts.P2PNetworkRepository;
@@ -15,14 +16,21 @@ public class RepositoryModule extends AbstractModule {
 	public RepositoryModule(final URI uri) {
 		var app = new RepositoryHiPEApp();
 		app.createModel(uri);
+		
+		TimeAggregator.gtTick();
 		api = app.initAPI();
+		TimeAggregator.gtTock();
+		
 	}
 
 	public RepositoryModule(final ResourceSet model) {
 		var app = new RepositoryHiPEApp();
 		app.setModel(model);
 		app.registerMetaModels();
+		
+		TimeAggregator.gtTick();
 		api = app.initAPI();
+		TimeAggregator.gtTock();
 	}
 
 	public ResourceSet getModel() {

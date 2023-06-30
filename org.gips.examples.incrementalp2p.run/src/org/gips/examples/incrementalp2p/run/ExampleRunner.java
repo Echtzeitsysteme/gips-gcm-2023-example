@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
+import org.gips.examples.incrementalp2p.common.TimeAggregator;
 import org.gips.examples.incrementalp2p.common.models.WaitingClient;
 import org.gips.examples.incrementalp2p.distribution.contracts.ConnectionLog;
 import org.gips.examples.incrementalp2p.distribution.contracts.IncrementalNodeDistributionEngine;
@@ -41,13 +42,16 @@ public class ExampleRunner {
 	@Inject
 	ConnectionLog connectionLog;
 
-	public void run(final List<WaitingClient> clients, final List<WaitingClient> additionalClients) {
+	public void run(final List<WaitingClient> clients, final List<WaitingClient> additionalClients,
+			final boolean openBrowser) {
 		repository.init().save(RelativeFolder, "Init");
 		incrementalNodeDistribution(clients);
 		removeRelayClientAndRedistribute();
 		incrementalNodeDistributionForAdditionalClients(additionalClients);
-		visualizer.createGraph(RelativeFolder, NodeName);
-		openHtmlFileInBrowser();
+		if (openBrowser) {
+			visualizer.createGraph(RelativeFolder, NodeName);
+			openHtmlFileInBrowser();
+		}
 	}
 
 	private void incrementalNodeDistribution(final List<WaitingClient> clients) {
@@ -73,7 +77,7 @@ public class ExampleRunner {
 
 	private void incrementalNodeDistributionForAdditionalClients(final List<WaitingClient> clients) {
 		connectionLog.clear();
-		
+
 		nodeDistributionEngine.distributeNodes(clients).save(RelativeFolder,
 				"IncrementalNodeDistribution_AdditionalClients");
 
@@ -108,5 +112,5 @@ public class ExampleRunner {
 	private VisualizationConnection toVisualisationConnection(ConnectionModel x) {
 		return new VisualizationConnection(x.server(), x.client(), (int) x.bandwidth());
 	}
-	
+
 }

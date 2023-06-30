@@ -1,2 +1,4 @@
 ﻿org.gips.examples.incrementalp2p.run/src-sim/
 *.log
+
+org.gips.examples.incrementalp2p.run/resources/bin/

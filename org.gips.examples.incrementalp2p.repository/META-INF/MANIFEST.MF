@@ -4,11 +4,11 @@ Bundle-ManifestVersion: 2
 Bundle-Name: org.gips.examples.incrementalp2p.repository
 Bundle-Vendor: My Company
 Bundle-Version: 1.0.0.qualifier
-Bundle-SymbolicName: org.gips.examples.incrementalp2p.repository; sing
- leton:=true
+Bundle-SymbolicName: org.gips.examples.incrementalp2p.repository; singleton:=true
 Bundle-ActivationPolicy: lazy
-Import-Package: org.apache.log4j,org.apache.commons.logging
-Bundle-RequiredExecutionEnvironment: JavaSE-16
+Import-Package: org.apache.log4j,
+ org.apache.commons.logging
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.emoflon.ibex.common,
  org.emoflon.ibex.gt,
  org.emoflon.ibex.patternmodel,
@@ -24,3 +24,4 @@ Export-Package: org.gips.examples.incrementalp2p.repository.api,
  org.gips.examples.incrementalp2p.repository.contracts,
  org.gips.examples.incrementalp2p.repository.contracts.models,
  org.gips.examples.incrementalp2p.repository.module
+

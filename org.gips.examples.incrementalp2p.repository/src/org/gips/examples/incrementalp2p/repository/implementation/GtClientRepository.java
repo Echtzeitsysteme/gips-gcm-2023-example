@@ -7,6 +7,7 @@ import java.util.stream.Stream;
 import org.apache.log4j.Logger;
 import org.emoflon.ibex.gt.api.GraphTransformationAPI;
 import org.gips.examples.incrementalp2p.common.CommonConstants;
+import org.gips.examples.incrementalp2p.common.TimeAggregator;
 import org.gips.examples.incrementalp2p.common.models.WaitingClient;
 import org.gips.examples.incrementalp2p.repository.api.RepositoryAPI;
 import org.gips.examples.incrementalp2p.repository.contracts.P2PNetworkRepository;
@@ -75,7 +76,9 @@ public class GtClientRepository extends AApiSaver implements P2PNetworkRepositor
 		Stream.concat(lectureStudioConnections, relayClientConnections).collect(Collectors.toList())
 				.forEach(this::createConnection);
 
+		TimeAggregator.gtTick();
 		api.updateMatches();
+		TimeAggregator.gtTock();
 	}
 
 	@Override
@@ -85,7 +88,9 @@ public class GtClientRepository extends AApiSaver implements P2PNetworkRepositor
 
 		relayClients.forEach(x -> removeRelayClientAndGetChildrenInternal(x));
 
+		TimeAggregator.gtTick();
 		api.updateMatches();
+		TimeAggregator.gtTock();
 
 		return relayClients;
 	}
@@ -96,7 +101,9 @@ public class GtClientRepository extends AApiSaver implements P2PNetworkRepositor
 
 		toRemove.forEach(x -> api.removePossibleConnection().apply(x, false));
 
+		TimeAggregator.gtTick();
 		api.updateMatches();
+		TimeAggregator.gtTock();
 	}
 
 	@Override
