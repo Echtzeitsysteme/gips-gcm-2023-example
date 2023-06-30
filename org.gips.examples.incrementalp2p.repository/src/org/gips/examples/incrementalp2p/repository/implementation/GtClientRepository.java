@@ -76,10 +76,9 @@ public class GtClientRepository extends AApiSaver implements P2PNetworkRepositor
 		Stream.concat(lectureStudioConnections, relayClientConnections).collect(Collectors.toList())
 				.forEach(this::createConnection);
 
-		final long tick = System.nanoTime();
+		TimeAggregator.gtTick();
 		api.updateMatches();
-		final long tock = System.nanoTime();
-		TimeAggregator.addToGtTime(tock - tick);
+		TimeAggregator.gtTock();
 	}
 
 	@Override
@@ -89,10 +88,9 @@ public class GtClientRepository extends AApiSaver implements P2PNetworkRepositor
 
 		relayClients.forEach(x -> removeRelayClientAndGetChildrenInternal(x));
 
-		final long tick = System.nanoTime();
+		TimeAggregator.gtTick();
 		api.updateMatches();
-		final long tock = System.nanoTime();
-		TimeAggregator.addToGtTime(tock - tick);
+		TimeAggregator.gtTock();
 
 		return relayClients;
 	}
@@ -103,10 +101,9 @@ public class GtClientRepository extends AApiSaver implements P2PNetworkRepositor
 
 		toRemove.forEach(x -> api.removePossibleConnection().apply(x, false));
 
-		final long tick = System.nanoTime();
+		TimeAggregator.gtTick();
 		api.updateMatches();
-		final long tock = System.nanoTime();
-		TimeAggregator.addToGtTime(tock - tick);
+		TimeAggregator.gtTock();
 	}
 
 	@Override

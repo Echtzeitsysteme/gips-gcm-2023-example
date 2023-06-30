@@ -35,24 +35,21 @@ public class GipsNodeDistribution implements NodeDistributionEngine {
 
 	@Override
 	public NodeDistributionEngine distributeNodes() {
-		long tick = System.nanoTime();
+		TimeAggregator.gtTick();
 		api.update();
-		long tock = System.nanoTime();
-		TimeAggregator.addToGtTime(tock - tick);
+		TimeAggregator.gtTock();
 		
 		api.buildILPProblem(false);
 
-		tick = System.nanoTime();
+		TimeAggregator.ilpTick();
 		api.solveILPProblem();
-		tock = System.nanoTime();
-		TimeAggregator.addToIlpTime(tock - tick);
+		TimeAggregator.ilpTock();
 
 		relevantMappings().forEach(x -> x.applyNonZeroMappings(false));
 		
-		tick = System.nanoTime();
+		TimeAggregator.gtTick();
 		api.update();
-		tock = System.nanoTime();
-		TimeAggregator.addToGtTime(tock - tick);
+		TimeAggregator.gtTock();
 		return this;
 	}
 

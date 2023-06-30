@@ -17,11 +17,10 @@ public class RepositoryModule extends AbstractModule {
 		var app = new RepositoryHiPEApp();
 		app.createModel(uri);
 		
-		final long tick = System.nanoTime();
+		TimeAggregator.gtTick();
 //		api.updateMatches();
 		api = app.initAPI();
-		final long tock = System.nanoTime();
-		TimeAggregator.addToGtTime(tock - tick);
+		TimeAggregator.gtTock();
 		
 	}
 
@@ -30,11 +29,10 @@ public class RepositoryModule extends AbstractModule {
 		app.setModel(model);
 		app.registerMetaModels();
 		
-		final long tick = System.nanoTime();
+		TimeAggregator.gtTick();
 //		api.updateMatches();
 		api = app.initAPI();
-		final long tock = System.nanoTime();
-		TimeAggregator.addToGtTime(tock - tick);
+		TimeAggregator.gtTock();
 	}
 
 	public ResourceSet getModel() {
