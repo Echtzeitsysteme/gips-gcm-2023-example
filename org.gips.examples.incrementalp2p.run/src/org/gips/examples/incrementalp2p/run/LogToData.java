@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 public class LogToData {
 
 	public static void main(final String[] args) {
-		if (args == null || args.length < 1) {
+		if (args == null || args.length == 0) {
 			throw new IllegalArgumentException("Path argument is missing.");
 		}
 
@@ -26,7 +26,6 @@ public class LogToData {
 		final List<String> files = new LinkedList<>();
 		try {
 			files.addAll(findFiles(Paths.get(args[0]), "log"));
-//			files.forEach(f -> System.out.println(f));
 		} catch (final IOException ex) {
 			ex.printStackTrace();
 			System.exit(1);
@@ -46,7 +45,6 @@ public class LogToData {
 
 		// Propagate data to sub lists
 		for (final String l : dataLines) {
-//			System.out.println(l);
 			final String clients = l.substring(0, l.indexOf(";"));
 			if (!data.containsKey(Integer.valueOf(clients))) {
 				data.put(Integer.valueOf(clients), new LinkedList<DataRecord>());
@@ -70,7 +68,6 @@ public class LogToData {
 			double meanGt = gtSum / drs.size();
 			double meanIlp = ilpSum / drs.size();
 			double meanMisc = (totalSum - gtSum - ilpSum) / drs.size();
-//			double meanMisc = totalSum / drs.size();
 
 			means.add(new DataRecord(clients, meanGt, meanIlp, meanMisc));
 		}
@@ -120,13 +117,8 @@ public class LogToData {
 
 		List<String> result;
 		try (Stream<Path> walk = Files.walk(path)) {
-			result = walk.filter(p -> !Files.isDirectory(p))
-					// this is a path, not string,
-					// this only test if path end with a certain path
-					// .filter(p -> p.endsWith(fileExtension))
-					// convert path to string first
-					.map(p -> p.toString().toLowerCase()).filter(f -> f.endsWith(fileExtension))
-					.collect(Collectors.toList());
+			result = walk.filter(p -> !Files.isDirectory(p)).map(p -> p.toString().toLowerCase())
+					.filter(f -> f.endsWith(fileExtension)).collect(Collectors.toList());
 		}
 
 		return result;

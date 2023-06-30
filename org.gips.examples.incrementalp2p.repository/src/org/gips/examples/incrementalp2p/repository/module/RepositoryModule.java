@@ -18,7 +18,6 @@ public class RepositoryModule extends AbstractModule {
 		app.createModel(uri);
 		
 		TimeAggregator.gtTick();
-//		api.updateMatches();
 		api = app.initAPI();
 		TimeAggregator.gtTock();
 		
@@ -30,7 +29,6 @@ public class RepositoryModule extends AbstractModule {
 		app.registerMetaModels();
 		
 		TimeAggregator.gtTick();
-//		api.updateMatches();
 		api = app.initAPI();
 		TimeAggregator.gtTock();
 	}

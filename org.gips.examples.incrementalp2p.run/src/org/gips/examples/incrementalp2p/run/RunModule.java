@@ -17,8 +17,8 @@ import com.google.inject.Injector;
 public class RunModule extends AbstractModule {
 	private static final URI Uri = URI.createFileURI("Model" + ".xmi");
 
-	public void run(final List<WaitingClient> clients, final List<WaitingClient> additionalClients) {
-		createInjector().getInstance(ExampleRunner.class).run(clients, additionalClients);
+	public void run(final List<WaitingClient> clients, final List<WaitingClient> additionalClients, final boolean openBrowser) {
+		createInjector().getInstance(ExampleRunner.class).run(clients, additionalClients, openBrowser);
 	}
 
 	@Override

@@ -33,7 +33,7 @@ public class ConsoleApp {
 		setArgs(args);
 		var clients = createClients();
 		var additionalClients = createAdditionalClients();
-		new RunModule().run(clients, additionalClients);
+		new RunModule().run(clients, additionalClients, true);
 	}
 
 	private static void setArgs(final String[] args) {
@@ -59,5 +59,5 @@ public class ConsoleApp {
 		return IntStream.rangeClosed(1, count).boxed().map(x -> new WaitingClient(prefix + x))
 				.collect(Collectors.toList());
 	}
-	
+
 }

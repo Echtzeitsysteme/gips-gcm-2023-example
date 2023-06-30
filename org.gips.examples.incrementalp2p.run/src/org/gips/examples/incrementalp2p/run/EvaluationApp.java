@@ -48,7 +48,7 @@ public class EvaluationApp {
 		setArgs(args);
 		var clients = createClients();
 		var additionalClients = createAdditionalClients();
-		new RunModule().run(clients, additionalClients);
+		new RunModule().run(clients, additionalClients, false);
 	}
 
 	private static void setArgs(final String[] args) {

@@ -1,6 +1,8 @@
 package org.gips.examples.incrementalp2p.run;
 
+import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +25,7 @@ import com.google.inject.Inject;
 
 public class ExampleRunner {
 	final static Logger logger = Logger.getLogger(ExampleRunner.class);
-//	private static final String NodeName = "NodeDistribution";
+	private static final String NodeName = "NodeDistribution";
 	private static final String Folder = "src-sim";
 	private static final String RelativeFolder = "." + File.separator + Folder;
 
@@ -40,13 +42,16 @@ public class ExampleRunner {
 	@Inject
 	ConnectionLog connectionLog;
 
-	public void run(final List<WaitingClient> clients, final List<WaitingClient> additionalClients) {
+	public void run(final List<WaitingClient> clients, final List<WaitingClient> additionalClients,
+			final boolean openBrowser) {
 		repository.init().save(RelativeFolder, "Init");
 		incrementalNodeDistribution(clients);
 		removeRelayClientAndRedistribute();
 		incrementalNodeDistributionForAdditionalClients(additionalClients);
-//		visualizer.createGraph(RelativeFolder, NodeName);
-//		openHtmlFileInBrowser();
+		if (openBrowser) {
+			visualizer.createGraph(RelativeFolder, NodeName);
+			openHtmlFileInBrowser();
+		}
 	}
 
 	private void incrementalNodeDistribution(final List<WaitingClient> clients) {
@@ -76,9 +81,6 @@ public class ExampleRunner {
 		nodeDistributionEngine.distributeNodes(clients).save(RelativeFolder,
 				"IncrementalNodeDistribution_AdditionalClients");
 
-		System.err.println("Total GT time: " + TimeAggregator.getGtTimeMillis());
-		System.err.println("Total ILP time: " + TimeAggregator.getIlpTimeMillis());
-
 		// For UI: Save Nodes & Edges for second update
 		var clientIds = clients.stream().map(x -> x.id()).collect(Collectors.toList());
 		var nodes = getCurrentNodeAsVisualizationNode(clientIds);
@@ -88,15 +90,15 @@ public class ExampleRunner {
 		visualizationUpdatesDataProvider.setAdditionalEdges(edges);
 	}
 
-//	private void openHtmlFileInBrowser() {
-//		try {
-//			var htmlFile = visualizer.getGraphFile(Folder, NodeName);
-//			Desktop.getDesktop().browse(htmlFile.toURI());
-//		} catch (final IOException e) {
-//			logger.error("Error while opening simulation", e);
-//			e.printStackTrace();
-//		}
-//	}
+	private void openHtmlFileInBrowser() {
+		try {
+			var htmlFile = visualizer.getGraphFile(Folder, NodeName);
+			Desktop.getDesktop().browse(htmlFile.toURI());
+		} catch (final IOException e) {
+			logger.error("Error while opening simulation", e);
+			e.printStackTrace();
+		}
+	}
 
 	private List<VisualizationNode> getCurrentNodeAsVisualizationNode(final List<String> nodeIds) {
 		var currentClients = repository.getClients(nodeIds);

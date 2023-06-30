@@ -153,7 +153,7 @@ function addAdditionalNodes()
 	if(additionalNodes.length > 0)
 	{
 		addAdditionalNode();
-		setTimeout(runStep3, 50)
+		setTimeout(runStep3, 750)
 	}
 }
 
@@ -162,7 +162,7 @@ function addAdditionalEdges()
 	if(additionalEdges.length > 0)
 	{
 		addAdditionalEdge();
-		setTimeout(runStep4, 100)
+		setTimeout(runStep4, 750)
 	}
 }
 
