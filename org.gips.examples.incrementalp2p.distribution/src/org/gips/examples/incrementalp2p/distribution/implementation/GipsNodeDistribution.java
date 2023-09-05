@@ -90,12 +90,10 @@ public class GipsNodeDistribution implements NodeDistributionEngine {
 
 	private ConnectionModel toModel(final StreamingClientRCMapping x) {
 		return toConnectionModel(x.getServer(), x.getClient(), x.getConnectionData());
-
 	}
 
 	private ConnectionModel toModel(final StreamingClientLSMapping x) {
 		return toConnectionModel(x.getServer(), x.getClient(), x.getConnectionData());
-
 	}
 
 	private ConnectionModel toModel(final RelayClientMapping x) {

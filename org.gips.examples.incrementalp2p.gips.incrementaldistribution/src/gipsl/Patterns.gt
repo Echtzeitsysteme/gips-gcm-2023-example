@@ -31,7 +31,7 @@ pattern findCurrentStreamingClientLS refines findCurrentLectureStudioConnection 
 	lsNode: Node	
 	relayClient: Node
 	lectureStudioConnection: Connection
-	#relayClient.isRelayClient==false
+	#relayClient.isRelayClient == false
 } when forbidfindrelayClientConnection
 
 pattern findrelayClientConnection {
@@ -39,7 +39,7 @@ pattern findrelayClientConnection {
 		-server->relayClient
 	}
 	
-	relayClient:Node
+	relayClient: Node
 }
 
 pattern findAnyClient {

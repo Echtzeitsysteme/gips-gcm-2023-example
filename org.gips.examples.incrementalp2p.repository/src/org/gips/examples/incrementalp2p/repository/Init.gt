@@ -1,65 +1,50 @@
 import "http://www.eclipse.org/emf/2002/Ecore"
 import "platform:/resource/LectureStudioModel/model/LectureStudioModel.ecore"
 
-rule root
-{
-	++root:Root
-	{
-		++-time->time
+rule root {
+	++root: Root {
+		++ -time->time
 	}
 	
-	++time:Time
-	{
+	++time: Time {
 		.current:=0.0
 	}
 }
 
-rule network
-{
-	root:Root
-	{
+rule network {
+	root: Root {
 		++-networks->network
 	}
 	++network: Network
 }
 
-rule waitingClientQueue
-{
-	lectureStudioServer:LectureStudioServer
-	{
-		++-waitingClients->waitingClientQueue
-		++-clientContainer->clientContainer
-		
+rule waitingClientQueue {
+	lectureStudioServer: LectureStudioServer {
+		++ -waitingClients->waitingClientQueue
+		++ -clientContainer->clientContainer
 	}
 	++waitingClientQueue: WaitingClientQueue
-	++clientContainer: ClientContainer	
+	++clientContainer: ClientContainer
 }
 
-rule lectureStudioServer(id:EString, size:EDouble) 
-{	
-	network:Network
-	{
-		++-lectureStudioServer->lectureStudioServer
+rule lectureStudioServer(id:EString, size:EDouble) {
+	network: Network {
+		++ -lectureStudioServer->lectureStudioServer
 	}
 	
-	++node:Node
-	{
-		.id:=param::id
-		.sendBandwidth:=150000.0
-		.receiveBandwidth:=N(300,5.0)
+	++node: Node {
+		.id := param::id
+		.sendBandwidth := 150000.0
+		.receiveBandwidth := N(300,5.0)
 		++ -data->data
 	}
 	
-	++lectureStudioServer : LectureStudioServer
-	{
+	++lectureStudioServer: LectureStudioServer {
 		++ -lsNode->node
 		++ -data->data
 	}
 	
-	++data:Data
-	{
-		.size:=param::size
+	++data: Data {
+		.size := param::size
 	}
 }
-
-

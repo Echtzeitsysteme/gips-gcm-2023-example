@@ -38,7 +38,7 @@ abstract rule connectToLectureStudio refines connectClientAndServer {
 }
 
 abstract rule connectToRelayClient refines connectClientAndServer {	
-	#server.sendBandwidth>= client.sendBandwidth
+	#server.sendBandwidth >= client.sendBandwidth
 	lectureStudio: LectureStudioServer {
 		-lsNode->lsNode
 	}
@@ -50,7 +50,7 @@ abstract rule connectToRelayClient refines connectClientAndServer {
 }
 
 abstract rule connectToRelayRelayClient refines connectClientAndServer {
-	#server.sendBandwidth>= client.sendBandwidth
+	#server.sendBandwidth >= client.sendBandwidth
 	
 	lectureStudio: LectureStudioServer {
 		-lsNode->lsNode
