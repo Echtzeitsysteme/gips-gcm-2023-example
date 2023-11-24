@@ -27,15 +27,15 @@ rule waitingClientQueue {
 	++clientContainer: ClientContainer
 }
 
-rule lectureStudioServer(id:EString, size:EDouble) {
+rule lectureStudioServer(id:EString, size:EDouble, sendBw:EDouble, receiveBw: EDouble) {
 	network: Network {
 		++ -lectureStudioServer->lectureStudioServer
 	}
 	
 	++node: Node {
 		.id := param::id
-		.sendBandwidth := 150000.0
-		.receiveBandwidth := N(300,5.0)
+		.sendBandwidth := param::sendBw
+		.receiveBandwidth := param::receiveBw
 		++ -data->data
 	}
 	

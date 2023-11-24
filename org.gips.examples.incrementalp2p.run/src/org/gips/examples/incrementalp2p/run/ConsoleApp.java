@@ -4,15 +4,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.gips.examples.incrementalp2p.common.JsonConverter;
+import org.gips.examples.incrementalp2p.common.JsonConverter.Network;
 import org.gips.examples.incrementalp2p.common.models.WaitingClient;
 
 public class ConsoleApp {
-	private static int MaxClients = 15;
-	private static int NewClients = 6;
-
 	final static Logger logger = Logger.getLogger(ConsoleApp.class);
+	protected static String jsonImportPath;
 
 	public static void main(final String[] args) {
 		Logger.getRootLogger().setLevel(Level.INFO);
@@ -31,33 +38,32 @@ public class ConsoleApp {
 
 	private static void run(final String[] args) {
 		setArgs(args);
-		var clients = createClients();
-		var additionalClients = createAdditionalClients();
-		new RunModule().run(clients, additionalClients, true);
+//		var clients = createClients();
+		final Network net = JsonConverter.jsonToModel(jsonImportPath);
+		new RunModule().run(net, false);
 	}
 
 	private static void setArgs(final String[] args) {
-		if (args.length >= 1) {
-			MaxClients = Integer.parseInt(args[1]);
-			logger.info("Set MaxClients to " + MaxClients);
+		final Options options = new Options();
+
+		// JSON file to load
+		final Option jsonImportFile = new Option("f", "file", true, "json file to load the initial network from");
+		jsonImportFile.setRequired(true);
+		options.addOption(jsonImportFile);
+
+		final CommandLineParser parser = new DefaultParser();
+		final HelpFormatter formatter = new HelpFormatter();
+		CommandLine cmd = null;
+
+		try {
+			cmd = parser.parse(options, args);
+		} catch (final ParseException ex) {
+			logger.error("Argument parsing error: " + ex.getMessage());
+			formatter.printHelp("cli parameters", options);
+			System.exit(1);
 		}
-		if (args.length >= 2) {
-			NewClients = Integer.parseInt(args[2]);
-			logger.info("Set NewClients to " + NewClients);
-		}
-	}
 
-	private static List<WaitingClient> createClients() {
-		return createClients(MaxClients, "Client");
-	}
-
-	private static List<WaitingClient> createAdditionalClients() {
-		return createClients(NewClients, "New Client");
-	}
-
-	private static List<WaitingClient> createClients(final int count, final String prefix) {
-		return IntStream.rangeClosed(1, count).boxed().map(x -> new WaitingClient(prefix + x))
-				.collect(Collectors.toList());
+		jsonImportPath = cmd.getOptionValue("file");
 	}
 
 }

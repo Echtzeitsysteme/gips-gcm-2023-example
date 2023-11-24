@@ -1,9 +1,7 @@
 package org.gips.examples.incrementalp2p.run;
 
-import java.util.List;
-
 import org.eclipse.emf.common.util.URI;
-import org.gips.examples.incrementalp2p.common.models.WaitingClient;
+import org.gips.examples.incrementalp2p.common.JsonConverter.Network;
 import org.gips.examples.incrementalp2p.distribution.module.IncrementalGipsModule;
 import org.gips.examples.incrementalp2p.repository.module.RepositoryModule;
 import org.gips.examples.incrementalp2p.visualization.contracts.GraphType;
@@ -17,8 +15,8 @@ import com.google.inject.Injector;
 public class RunModule extends AbstractModule {
 	private static final URI Uri = URI.createFileURI("Model" + ".xmi");
 
-	public void run(final List<WaitingClient> clients, final List<WaitingClient> additionalClients, final boolean openBrowser) {
-		createInjector().getInstance(ExampleRunner.class).run(clients, additionalClients, openBrowser);
+	public void run(final Network net, final boolean openBrowser) {
+		createInjector().getInstance(ExampleRunner.class).run(net, openBrowser);
 	}
 
 	@Override

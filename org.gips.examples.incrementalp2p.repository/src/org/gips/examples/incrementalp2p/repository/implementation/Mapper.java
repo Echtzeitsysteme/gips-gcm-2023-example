@@ -9,7 +9,7 @@ import LectureStudioModel.Node;
 
 class Mapper {
 	public static WaitingClient toWaitingClient(final Node x) {
-		return new WaitingClient(x.getId());
+		return new WaitingClient(x.getId(), (int) x.getReceiveBandwidth(), (int) x.getSendBandwidth());
 	}
 
 	public static ClientModel toClientModel(final Node x) {

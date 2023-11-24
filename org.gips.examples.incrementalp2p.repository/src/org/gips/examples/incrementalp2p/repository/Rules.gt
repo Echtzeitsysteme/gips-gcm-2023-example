@@ -1,14 +1,11 @@
 import "http://www.eclipse.org/emf/2002/Ecore"
 import "platform:/resource/LectureStudioModel/model/LectureStudioModel.ecore"
 
-//Median bandwidth
-//https://de.statista.com/statistik/daten/studie/416534/umfrage/durchschnittliche-internetgeschwindigkeit-in-deutschland/
-//https://www.speedtest.net/global-index/germany
-rule addClient(id:EString) {
+rule addClient(id:EString, sendBw:EDouble, receiveBw:EDouble) {
 	++node: Node {
 		.id := param::id
-		.sendBandwidth := N(150000.0, 30000.0)
-		.receiveBandwidth := N(36000.0, 7000.0)	
+		.sendBandwidth := param::sendBw
+		.receiveBandwidth := param::receiveBw	
 		++ -data->data
 	}
 	
@@ -37,7 +34,7 @@ rule addWaitingClient(id:EString) {
 	#node.id == param::id
 }
 
-rule possibleConnection(serverId:EString, clientId:EString) {
+rule possibleConnection(serverId:EString, clientId:EString, bw:EDouble) {
 	lectureStudioServer: LectureStudioServer {
 		-clientContainer-> clientContainer
 	}
@@ -48,7 +45,7 @@ rule possibleConnection(serverId:EString, clientId:EString) {
 	++connection: ConnectionData {
 		.serverId := param::serverId
 		.clientId := param::clientId
-		.bandwidth := N(35000.0, 8000.0)
+		.bandwidth := param::bw
 	}
 } 
 

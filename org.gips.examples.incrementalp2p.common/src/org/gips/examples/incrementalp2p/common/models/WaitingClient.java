@@ -1,5 +1,5 @@
 package org.gips.examples.incrementalp2p.common.models;
 
-public record WaitingClient(String id) {
+public record WaitingClient(String id, int maxDownload, int maxUpload) {
 
 }
