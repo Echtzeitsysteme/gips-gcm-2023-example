@@ -19,7 +19,7 @@ import org.gips.examples.incrementalp2p.repository.contracts.P2PNetworkRepositor
 import org.gips.examples.incrementalp2p.repository.contracts.models.ClientModel;
 import org.gips.examples.incrementalp2p.repository.contracts.models.ConnectionModel;
 
-import com.google.inject.Inject;
+import jakarta.inject.Inject;
 
 public class GtClientRepository extends AApiSaver implements P2PNetworkRepository {
 //	final String nameToSearch = "lectureStudioServer";
