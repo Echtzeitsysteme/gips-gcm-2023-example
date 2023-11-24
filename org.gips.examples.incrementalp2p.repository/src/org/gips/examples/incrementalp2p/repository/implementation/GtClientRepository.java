@@ -187,6 +187,10 @@ public class GtClientRepository extends AApiSaver implements P2PNetworkRepositor
 					con = currentConnection;
 				}
 			}
+			if (con == null) {
+				throw new UnsupportedOperationException("No connection between " + client.id() + " and " + server.id()
+						+ " found. Check your JSON input file.");
+			}
 			pairs.add(new ClientServerPair(server.id(), client.id(), con.bandwidth()));
 		});
 		return pairs.stream();

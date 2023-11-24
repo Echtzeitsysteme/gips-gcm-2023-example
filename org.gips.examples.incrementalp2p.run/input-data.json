@@ -32,6 +32,34 @@
             "bandwidth": 3000,
             "latency": 20,
             "loss": 0.1
+        },
+        {
+            "sourceName": "lectureStudioServer",
+            "targetName": "1",
+            "bandwidth": 50000,
+            "latency": 20,
+            "loss": 0.1
+        },
+        {
+            "sourceName": "1",
+            "targetName": "lectureStudioServer",
+            "bandwidth": 4000,
+            "latency": 20,
+            "loss": 0.1
+        },
+        {
+            "sourceName": "lectureStudioServer",
+            "targetName": "2",
+            "bandwidth": 50000,
+            "latency": 20,
+            "loss": 0.1
+        },
+        {
+            "sourceName": "2",
+            "targetName": "lectureStudioServer",
+            "bandwidth": 4000,
+            "latency": 20,
+            "loss": 0.1
         }
     ]
 }
