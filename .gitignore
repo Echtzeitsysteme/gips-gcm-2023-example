@@ -2,3 +2,6 @@
 *.log
 
 org.gips.examples.incrementalp2p.run/resources/bin/
+
+org.gips.examples.incrementalp2p.run/input-data.json
+org.gips.examples.incrementalp2p.run/output-data.json

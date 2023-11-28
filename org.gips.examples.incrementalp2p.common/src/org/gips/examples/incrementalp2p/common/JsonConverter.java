@@ -1,12 +1,15 @@
 package org.gips.examples.incrementalp2p.common;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -72,6 +75,52 @@ public class JsonConverter {
 	}
 
 	public record Network(int filesize, Collection<Peer> peers, Collection<Connection> connections) {
+	}
+
+	public record SrcTrgTuple(String source, String target) {
+	}
+
+	public static void convertOutputToJson(final List<String> superpeers, final List<SrcTrgTuple> p2pConnections,
+			final String path) {
+		// TODO Auto-generated method stub
+		final JsonObject json = new JsonObject();
+
+		// Superpeers
+		final JsonArray superpeersJson = new JsonArray();
+		for (final String s : superpeers) {
+			final JsonObject sJson = new JsonObject();
+			sJson.addProperty("name", s);
+			superpeersJson.add(sJson);
+		}
+		json.add("superpeers", superpeersJson);
+
+		// Peer2Peer connections
+		final JsonArray p2pConnectionsJson = new JsonArray();
+		for (final SrcTrgTuple p : p2pConnections) {
+			final JsonObject pJson = new JsonObject();
+			pJson.addProperty("sourceName", p.source);
+			pJson.addProperty("targetName", p.target);
+			p2pConnectionsJson.add(pJson);
+		}	
+		json.add("peer2peer", p2pConnectionsJson);
+		writeFile(path, new GsonBuilder().setPrettyPrinting().create().toJson(json));
+	}
+
+	private static void writeFile(final String path, final String content) {
+		FileWriter file = null;
+		try {
+			file = new FileWriter(path);
+			file.write(content);
+		} catch (final IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				file.flush();
+				file.close();
+			} catch (final IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

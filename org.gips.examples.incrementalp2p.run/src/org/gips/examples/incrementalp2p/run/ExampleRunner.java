@@ -3,24 +3,17 @@ package org.gips.examples.incrementalp2p.run;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
+import org.gips.examples.incrementalp2p.common.JsonConverter;
 import org.gips.examples.incrementalp2p.common.JsonConverter.Network;
-import org.gips.examples.incrementalp2p.common.TimeAggregator;
-import org.gips.examples.incrementalp2p.common.models.WaitingClient;
 import org.gips.examples.incrementalp2p.distribution.contracts.ConnectionLog;
 import org.gips.examples.incrementalp2p.distribution.contracts.IncrementalNodeDistributionEngine;
+import org.gips.examples.incrementalp2p.distribution.implementation.IncrementalGipsNodeDistribution;
 import org.gips.examples.incrementalp2p.repository.contracts.P2PNetworkRepository;
-import org.gips.examples.incrementalp2p.repository.contracts.models.ClientModel;
-import org.gips.examples.incrementalp2p.repository.contracts.models.ConnectionModel;
 import org.gips.examples.incrementalp2p.visualization.contracts.CachingVisualizationDataProvider;
 import org.gips.examples.incrementalp2p.visualization.contracts.GraphVisualizer;
-import org.gips.examples.incrementalp2p.visualization.contracts.VisualizationConnection;
-import org.gips.examples.incrementalp2p.visualization.contracts.VisualizationNode;
 import org.gips.examples.incrementalp2p.visualization.contracts.VisualizationUpdatesDataProvider;
-import org.gips.examples.incrementalp2p.visualization.implementation.mappers.Mapper;
 
 import jakarta.inject.Inject;
 
@@ -57,6 +50,11 @@ public class ExampleRunner {
 
 	private void incrementalNodeDistribution(final Network net) {
 		nodeDistributionEngine.distributeNodes(net).save(RelativeFolder, "IncrementalNodeDistribution");
+		
+		var e = ((IncrementalGipsNodeDistribution) nodeDistributionEngine);
+//		e.getP2pConnections();
+//		e.getSuperpeers();
+		JsonConverter.convertOutputToJson(e.getSuperpeers(), e.getP2pConnections(), "./output-data.json");
 
 		// For UI: Use First Incremental distr. as first view --> Cache network data
 		cachingVisualizationDataProvider.cache();

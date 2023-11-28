@@ -3,11 +3,14 @@ package org.gips.examples.incrementalp2p.distribution.implementation;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.apache.log4j.Logger;
 import org.emoflon.gips.core.gt.GTMapper;
 import org.gips.examples.incrementalp2p.common.Guard;
+import org.gips.examples.incrementalp2p.common.JsonConverter.SrcTrgTuple;
 import org.gips.examples.incrementalp2p.common.TimeAggregator;
 import org.gips.examples.incrementalp2p.distribution.contracts.ConnectionLog;
 import org.gips.examples.incrementalp2p.distribution.contracts.NodeDistributionEngine;
@@ -33,24 +36,91 @@ public class GipsNodeDistribution implements NodeDistributionEngine {
 	ConnectionLog log;
 	final static Logger logger = Logger.getLogger(SquareRootIncrementStrategy.class);
 
+	final List<String> superpeers = new LinkedList<>();
+	final List<SrcTrgTuple> p2p = new LinkedList<>();
+
 	@Override
 	public NodeDistributionEngine distributeNodes() {
 		TimeAggregator.gtTick();
 		api.update();
 		TimeAggregator.gtTock();
-		
+
 		api.buildILPProblem(false);
 
 		TimeAggregator.ilpTick();
 		api.solveILPProblem();
 		TimeAggregator.ilpTock();
 
+		getDataForJsonExport();
+
 		relevantMappings().forEach(x -> x.applyNonZeroMappings(false));
-		
+
 		TimeAggregator.gtTick();
 		api.update();
 		TimeAggregator.gtTock();
 		return this;
+	}
+
+	private void getDataForJsonExport() {
+		// Reset possibly already indexed data
+		superpeers.clear();
+		p2p.clear();
+
+		// Find all super peers
+		var rcMapper = api.getRelayClient();
+		rcMapper.getNonZeroVariableMappings().forEach(m -> {
+			final String id = m.getServer().getId();
+			if (!superpeers.contains(id)) {
+				superpeers.add(id);
+			}
+		});
+
+		var crcMapper = api.getStreamingClientRC();
+		crcMapper.getNonZeroVariableMappings().forEach(m -> {
+			final String id = m.getServer().getId();
+			if (!superpeers.contains(id)) {
+				superpeers.add(id);
+			}
+		});
+
+		// Find all peer2peer connections
+		rcMapper.getNonZeroVariableMappings().forEach(m -> {
+			final String trg = m.getConnectionData().getClientId();
+			final String src = m.getConnectionData().getServerId();
+			final SrcTrgTuple t = new SrcTrgTuple(src, trg);
+			if (!p2p.contains(t)) {
+				p2p.add(t);
+			}
+		});
+
+		crcMapper.getNonZeroVariableMappings().forEach(m -> {
+			final String trg = m.getConnectionData().getClientId();
+			final String src = m.getConnectionData().getServerId();
+			final SrcTrgTuple t = new SrcTrgTuple(src, trg);
+			if (!p2p.contains(t)) {
+				p2p.add(t);
+			}
+		});
+
+		var lsMapper = api.getStreamingClientLS();
+		lsMapper.getNonZeroVariableMappings().forEach(m -> {
+			final String trg = m.getConnectionData().getClientId();
+			final String src = m.getConnectionData().getServerId();
+			final SrcTrgTuple t = new SrcTrgTuple(src, trg);
+			if (!p2p.contains(t)) {
+				p2p.add(t);
+			}
+		});
+
+		System.out.println("test");
+	}
+
+	public List<String> getSuperpeers() {
+		return this.superpeers;
+	}
+
+	public List<SrcTrgTuple> getP2pConnections() {
+		return this.p2p;
 	}
 
 	@Override
