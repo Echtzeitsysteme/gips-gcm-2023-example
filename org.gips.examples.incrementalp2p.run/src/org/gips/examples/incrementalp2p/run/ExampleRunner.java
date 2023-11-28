@@ -36,10 +36,9 @@ public class ExampleRunner {
 	@Inject
 	ConnectionLog connectionLog;
 
-	public void run(final Network net,
-			final boolean openBrowser) {
+	public void run(final Network net, final String jsonOutputPath, final boolean openBrowser) {
 		repository.init(net).save(RelativeFolder, "Init");
-		incrementalNodeDistribution(net);
+		incrementalNodeDistribution(net, jsonOutputPath);
 //		removeRelayClientAndRedistribute();
 //		incrementalNodeDistributionForAdditionalClients(additionalClients);
 		if (openBrowser) {
@@ -48,13 +47,13 @@ public class ExampleRunner {
 		}
 	}
 
-	private void incrementalNodeDistribution(final Network net) {
+	private void incrementalNodeDistribution(final Network net, final String jsonOutputPath) {
 		nodeDistributionEngine.distributeNodes(net).save(RelativeFolder, "IncrementalNodeDistribution");
-		
+
 		var e = ((IncrementalGipsNodeDistribution) nodeDistributionEngine);
 //		e.getP2pConnections();
 //		e.getSuperpeers();
-		JsonConverter.convertOutputToJson(e.getSuperpeers(), e.getP2pConnections(), "./output-data.json");
+		JsonConverter.convertOutputToJson(e.getSuperpeers(), e.getP2pConnections(), jsonOutputPath);
 
 		// For UI: Use First Incremental distr. as first view --> Cache network data
 		cachingVisualizationDataProvider.cache();

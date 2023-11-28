@@ -1,12 +1,7 @@
 package org.gips.examples.incrementalp2p.distribution.implementation;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.apache.log4j.Logger;
 import org.gips.examples.incrementalp2p.common.JsonConverter.Network;
-import org.gips.examples.incrementalp2p.common.models.WaitingClient;
-import org.gips.examples.incrementalp2p.distribution.contracts.IncrementStrategy;
 import org.gips.examples.incrementalp2p.distribution.contracts.IncrementalNodeDistributionEngine;
 import org.gips.examples.incrementalp2p.repository.contracts.P2PNetworkRepository;
 
