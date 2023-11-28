@@ -39,8 +39,6 @@ public class ExampleRunner {
 	public void run(final Network net, final String jsonOutputPath, final boolean openBrowser) {
 		repository.init(net).save(RelativeFolder, "Init");
 		incrementalNodeDistribution(net, jsonOutputPath);
-//		removeRelayClientAndRedistribute();
-//		incrementalNodeDistributionForAdditionalClients(additionalClients);
 		if (openBrowser) {
 			visualizer.createGraph(RelativeFolder, NodeName);
 			openHtmlFileInBrowser();
@@ -51,42 +49,11 @@ public class ExampleRunner {
 		nodeDistributionEngine.distributeNodes(net).save(RelativeFolder, "IncrementalNodeDistribution");
 
 		var e = ((IncrementalGipsNodeDistribution) nodeDistributionEngine);
-//		e.getP2pConnections();
-//		e.getSuperpeers();
 		JsonConverter.convertOutputToJson(e.getSuperpeers(), e.getP2pConnections(), jsonOutputPath);
 
 		// For UI: Use First Incremental distr. as first view --> Cache network data
 		cachingVisualizationDataProvider.cache();
 	}
-
-//	private void removeRelayClientAndRedistribute() {
-//		var removedClients = repository.removeRelayClientsAndAttachOrphansAsWaiting(1);
-//
-//		// Redistribute
-//		connectionLog.clear();
-//		nodeDistributionEngine.distributeNodes().save(Folder, "IncrementalNodeDistribution_RemovedClients");
-//
-//		// For UI: Save Nodes & Edges for first update
-//		var edges = connectionLog.getLog().stream().map(this::toVisualisationConnection).collect(Collectors.toList());
-//
-//		visualizationUpdatesDataProvider.setRemovdNodes(toVisualisationNodes(removedClients));
-//		visualizationUpdatesDataProvider.setUpdatedEdges(edges);
-//	}
-//
-//	private void incrementalNodeDistributionForAdditionalClients(final List<WaitingClient> clients) {
-//		connectionLog.clear();
-//
-//		nodeDistributionEngine.distributeNodes(clients).save(RelativeFolder,
-//				"IncrementalNodeDistribution_AdditionalClients");
-//
-//		// For UI: Save Nodes & Edges for second update
-//		var clientIds = clients.stream().map(x -> x.id()).collect(Collectors.toList());
-//		var nodes = getCurrentNodeAsVisualizationNode(clientIds);
-//		var edges = connectionLog.getLog().stream().map(this::toVisualisationConnection).collect(Collectors.toList());
-//
-//		visualizationUpdatesDataProvider.setAdditionalNodes(nodes);
-//		visualizationUpdatesDataProvider.setAdditionalEdges(edges);
-//	}
 
 	private void openHtmlFileInBrowser() {
 		try {
@@ -97,18 +64,5 @@ public class ExampleRunner {
 			e.printStackTrace();
 		}
 	}
-
-//	private List<VisualizationNode> getCurrentNodeAsVisualizationNode(final List<String> nodeIds) {
-//		var currentClients = repository.getClients(nodeIds);
-//		return toVisualisationNodes(currentClients);
-//	}
-//
-//	private static List<VisualizationNode> toVisualisationNodes(List<ClientModel> currentClients) {
-//		return currentClients.stream().map(Mapper::toVisualizationNode).collect(Collectors.toList());
-//	}
-//
-//	private VisualizationConnection toVisualisationConnection(ConnectionModel x) {
-//		return new VisualizationConnection(x.server(), x.client(), (int) x.bandwidth());
-//	}
 
 }

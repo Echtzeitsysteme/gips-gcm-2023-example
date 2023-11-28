@@ -34,9 +34,8 @@ public class ConsoleApp {
 
 	private static void run(final String[] args) {
 		setArgs(args);
-//		var clients = createClients();
 		final Network net = JsonConverter.jsonToModel(jsonImportPath);
-		new RunModule().run(net, jsonOutputPath, true);
+		new RunModule().run(net, jsonOutputPath, false);
 	}
 
 	private static void setArgs(final String[] args) {
