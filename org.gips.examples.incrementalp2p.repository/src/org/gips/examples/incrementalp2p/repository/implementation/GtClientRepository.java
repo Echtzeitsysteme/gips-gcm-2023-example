@@ -67,19 +67,58 @@ public class GtClientRepository extends AApiSaver implements P2PNetworkRepositor
 		return this;
 	}
 
+//	@Override
+//	public void addWaitingClients(final Network net) {
+//		var ls = api.findLectureStudioServer().matchStream().map(x -> x.getLsNode()).map(Mapper::toWaitingClient)
+//				.findFirst().get();
+//
+////		var clientModels = clients.stream().collect(Collectors.toList());
+//		final var clientModels = new LinkedList<WaitingClient>();
+//		final var pIt = net.peers().iterator();
+//		while (pIt.hasNext()) {
+//			final var peer = pIt.next();
+//			if (peer.name() != null && !peer.name().equals(nameToSearch)) {
+//				clientModels.add(new WaitingClient(peer.name(), peer.maxDownload(), peer.maxUpload()));
+//			}
+//		}
+//
+//		var currentNodes = api.findAnyNode().matchStream().map(x -> x.getNode()).filter(x -> x.getId() != ls.id())
+//				.map(Mapper::toWaitingClient).collect(Collectors.toList());
+//
+//		var possibleServerNodes = Stream.concat(clientModels.stream(), currentNodes.stream());
+//
+//		var lectureStudioConnections = getConnectionsForServer(clientModels, ls, net.connections());
+//		var relayClientConnections = possibleServerNodes
+//				.flatMap(x -> getConnectionsForServer(clientModels, x, net.connections()));
+//
+//		clientModels.forEach(this::addClient);
+//
+//		Stream.concat(lectureStudioConnections, relayClientConnections).collect(Collectors.toList())
+//				.forEach(this::createConnection);
+//
+//		TimeAggregator.gtTick();
+//		api.updateMatches();
+//		TimeAggregator.gtTock();
+//	}
+	
+
 	@Override
-	public void addWaitingClients(final Network net) {
+	public void addWaitingClients(final List<Peer> currentPeers, final List<Connection> allConnections) {
 		var ls = api.findLectureStudioServer().matchStream().map(x -> x.getLsNode()).map(Mapper::toWaitingClient)
 				.findFirst().get();
 
 //		var clientModels = clients.stream().collect(Collectors.toList());
 		final var clientModels = new LinkedList<WaitingClient>();
-		final var pIt = net.peers().iterator();
-		while (pIt.hasNext()) {
-			final var peer = pIt.next();
-			if (peer.name() != null && !peer.name().equals(nameToSearch)) {
-				clientModels.add(new WaitingClient(peer.name(), peer.maxDownload(), peer.maxUpload()));
-			}
+//		final var pIt = net.peers().iterator();
+//		while (pIt.hasNext()) {
+//			final var peer = pIt.next();
+//			if (peer.name() != null && !peer.name().equals(nameToSearch)) {
+//				clientModels.add(new WaitingClient(peer.name(), peer.maxDownload(), peer.maxUpload()));
+//			}
+//		}
+		
+		for (final Peer p : currentPeers) {
+			clientModels.add(new WaitingClient(p.name(), p.maxDownload(), p.maxUpload()));
 		}
 
 		var currentNodes = api.findAnyNode().matchStream().map(x -> x.getNode()).filter(x -> x.getId() != ls.id())
@@ -87,14 +126,19 @@ public class GtClientRepository extends AApiSaver implements P2PNetworkRepositor
 
 		var possibleServerNodes = Stream.concat(clientModels.stream(), currentNodes.stream());
 
-		var lectureStudioConnections = getConnectionsForServer(clientModels, ls, net.connections());
+		var lectureStudioConnections = getConnectionsForServer(clientModels, ls, allConnections);
 		var relayClientConnections = possibleServerNodes
-				.flatMap(x -> getConnectionsForServer(clientModels, x, net.connections()));
+				.flatMap(x -> getConnectionsForServer(clientModels, x, allConnections));
+//		var relayClientConnections = currentConnections.stream();
+//		var allConnections = currentConnections.stream();
+//		var allConnections = possibleServerNodes.flatMap(x -> getConnectionsForServer(clientModels, x, currentConnections));
 
 		clientModels.forEach(this::addClient);
+//		var test = allConnections.collect(Collectors.toList());
 
 		Stream.concat(lectureStudioConnections, relayClientConnections).collect(Collectors.toList())
 				.forEach(this::createConnection);
+//		allConnections.collect(Collectors.toList()).forEach(this::createConnection);
 
 		TimeAggregator.gtTick();
 		api.updateMatches();

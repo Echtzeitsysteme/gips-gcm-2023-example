@@ -2,7 +2,9 @@ package org.gips.examples.incrementalp2p.repository.contracts;
 
 import java.util.List;
 
+import org.gips.examples.incrementalp2p.common.JsonConverter.Connection;
 import org.gips.examples.incrementalp2p.common.JsonConverter.Network;
+import org.gips.examples.incrementalp2p.common.JsonConverter.Peer;
 import org.gips.examples.incrementalp2p.repository.contracts.models.ClientModel;
 import org.gips.examples.incrementalp2p.repository.contracts.models.ConnectionModel;
 
@@ -17,7 +19,9 @@ public interface P2PNetworkRepository extends ApiSaver {
 
 	P2PNetworkRepository init(Network net);
 
-	void addWaitingClients(Network net);
+//	void addWaitingClients(Network net);
+
+	void addWaitingClients(List<Peer> currentPeers, List<Connection> currentConnections);
 
 //	List<ClientModel> removeRelayClientsAndAttachOrphansAsWaiting(int count);
 //

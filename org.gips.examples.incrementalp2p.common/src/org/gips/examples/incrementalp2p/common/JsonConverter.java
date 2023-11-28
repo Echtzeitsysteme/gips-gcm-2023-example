@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -23,8 +24,8 @@ public class JsonConverter {
 		final JsonArray jsonPeers = (JsonArray) json.get("peers");
 		final JsonArray jsonConnections = (JsonArray) json.get("connections");
 
-		final Collection<Peer> peers = new HashSet<Peer>();
-		final Collection<Connection> connections = new HashSet<Connection>();
+		final List<Peer> peers = new LinkedList<Peer>();
+		final List<Connection> connections = new LinkedList<Connection>();
 
 		for (int i = 0; i < jsonPeers.size(); i++) {
 			final JsonObject peer = jsonPeers.get(i).getAsJsonObject();
@@ -74,7 +75,7 @@ public class JsonConverter {
 	public record Connection(String source, String target, int bandwidth) {
 	}
 
-	public record Network(int filesize, Collection<Peer> peers, Collection<Connection> connections) {
+	public record Network(int filesize, List<Peer> peers, List<Connection> connections) {
 	}
 
 	public record SrcTrgTuple(String source, String target) {

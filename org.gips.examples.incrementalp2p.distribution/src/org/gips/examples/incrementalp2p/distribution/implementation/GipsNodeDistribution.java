@@ -111,8 +111,6 @@ public class GipsNodeDistribution implements NodeDistributionEngine {
 				p2p.add(t);
 			}
 		});
-
-		System.out.println("test");
 	}
 
 	public List<String> getSuperpeers() {
