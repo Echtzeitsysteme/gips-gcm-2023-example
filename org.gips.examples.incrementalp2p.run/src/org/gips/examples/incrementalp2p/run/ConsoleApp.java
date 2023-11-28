@@ -16,6 +16,8 @@ public class ConsoleApp {
 	final static Logger logger = Logger.getLogger(ConsoleApp.class);
 	protected static String jsonImportPath;
 	protected static String jsonOutputPath;
+	protected static boolean enableVisualization = false;
+	protected static int stepsize = 1;
 
 	public static void main(final String[] args) {
 		Logger.getRootLogger().setLevel(Level.INFO);
@@ -35,7 +37,7 @@ public class ConsoleApp {
 	private static void run(final String[] args) {
 		setArgs(args);
 		final Network net = JsonConverter.jsonToModel(jsonImportPath);
-		new RunModule().run(net, jsonOutputPath, false);
+		new RunModule().run(net, jsonOutputPath, enableVisualization, stepsize);
 	}
 
 	private static void setArgs(final String[] args) {
@@ -51,6 +53,16 @@ public class ConsoleApp {
 		jsonExportFile.setRequired(true);
 		options.addOption(jsonExportFile);
 
+		// Enable or disable the visualization
+		final Option enableVisualization = new Option("v", "visualization", false, "enable the visualization");
+		enableVisualization.setRequired(false);
+		options.addOption(enableVisualization);
+
+		// Increment size
+		final Option incrementSize = new Option("s", "stepsize", true, "step size for the increment");
+		incrementSize.setRequired(false);
+		options.addOption(incrementSize);
+
 		final CommandLineParser parser = new DefaultParser();
 		final HelpFormatter formatter = new HelpFormatter();
 		CommandLine cmd = null;
@@ -65,6 +77,16 @@ public class ConsoleApp {
 
 		jsonImportPath = cmd.getOptionValue("input");
 		jsonOutputPath = cmd.getOptionValue("output");
+		ConsoleApp.enableVisualization = cmd.hasOption("visualization");
+		if (cmd.hasOption("stepsize")) {
+			final int stepsize = Integer.valueOf(cmd.getOptionValue("stepsize"));
+
+			if (stepsize <= 0) {
+				throw new IllegalArgumentException("Stepsize was " + stepsize + " but must be >=1.");
+			}
+
+			ConsoleApp.stepsize = stepsize;
+		}
 	}
 
 }

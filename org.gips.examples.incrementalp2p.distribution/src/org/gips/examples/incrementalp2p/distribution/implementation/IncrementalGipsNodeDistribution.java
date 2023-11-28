@@ -18,13 +18,13 @@ public class IncrementalGipsNodeDistribution extends GipsNodeDistribution implem
 	private P2PNetworkRepository repository;
 
 	@Override
-	public IncrementalNodeDistributionEngine distributeNodes(final Network net) {
-		addClients(net);
+	public IncrementalNodeDistributionEngine distributeNodes(final Network net, final int stepsize) {
+		addClients(net, stepsize);
 		return this;
 	}
 
-	private void addClients(final Network net) {
-		final int increment = 2;
+	private void addClients(final Network net, final int stepsize) {
+		final int increment = stepsize;
 		// Assumption: The first node is the lectureStudioServer
 		for (int i = 0; i < net.peers().size(); i += increment) {
 			final List<Peer> currentPeers = new LinkedList<Peer>();

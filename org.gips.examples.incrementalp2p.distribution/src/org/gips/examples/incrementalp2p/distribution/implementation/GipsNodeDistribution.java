@@ -62,10 +62,6 @@ public class GipsNodeDistribution implements NodeDistributionEngine {
 	}
 
 	private void getDataForJsonExport() {
-		// Reset possibly already indexed data
-		superpeers.clear();
-		p2p.clear();
-
 		// Find all super peers
 		var rcMapper = api.getRelayClient();
 		rcMapper.getNonZeroVariableMappings().forEach(m -> {

@@ -36,17 +36,17 @@ public class ExampleRunner {
 	@Inject
 	ConnectionLog connectionLog;
 
-	public void run(final Network net, final String jsonOutputPath, final boolean openBrowser) {
+	public void run(final Network net, final String jsonOutputPath, final boolean openBrowser, final int stepsize) {
 		repository.init(net).save(RelativeFolder, "Init");
-		incrementalNodeDistribution(net, jsonOutputPath);
+		incrementalNodeDistribution(net, jsonOutputPath, stepsize);
 		if (openBrowser) {
 			visualizer.createGraph(RelativeFolder, NodeName);
 			openHtmlFileInBrowser();
 		}
 	}
 
-	private void incrementalNodeDistribution(final Network net, final String jsonOutputPath) {
-		nodeDistributionEngine.distributeNodes(net).save(RelativeFolder, "IncrementalNodeDistribution");
+	private void incrementalNodeDistribution(final Network net, final String jsonOutputPath, final int stepsize) {
+		nodeDistributionEngine.distributeNodes(net, stepsize).save(RelativeFolder, "IncrementalNodeDistribution");
 
 		var e = ((IncrementalGipsNodeDistribution) nodeDistributionEngine);
 		JsonConverter.convertOutputToJson(e.getSuperpeers(), e.getP2pConnections(), jsonOutputPath);

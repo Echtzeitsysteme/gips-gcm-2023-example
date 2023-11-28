@@ -15,8 +15,8 @@ import com.google.inject.Injector;
 public class RunModule extends AbstractModule {
 	private static final URI Uri = URI.createFileURI("Model" + ".xmi");
 
-	public void run(final Network net, final String jsonOutputPath, final boolean openBrowser) {
-		createInjector().getInstance(ExampleRunner.class).run(net, jsonOutputPath, openBrowser);
+	public void run(final Network net, final String jsonOutputPath, final boolean openBrowser, final int stepsize) {
+		createInjector().getInstance(ExampleRunner.class).run(net, jsonOutputPath, openBrowser, stepsize);
 	}
 
 	@Override
