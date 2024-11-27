@@ -1,6 +1,8 @@
 # GIPS GCM 2023 Example
 
-[**GIPS**](https://gips.dev) is an open-source framework for **G**raph-Based **I**LP **P**roblem **S**pecification.
+## This example was migrated to the [gips-examples](https://github.com/Echtzeitsysteme/gips-examples) repository!
+
+[**GIPS**](https://gips.dev) is an open-source framework for **G**raph-Based (M)**I**LP **P**roblem **S**pecification.
 
 This repository holds the example of our **GCM 2023 Artifact**.
 
